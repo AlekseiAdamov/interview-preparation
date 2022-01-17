@@ -1,11 +1,12 @@
 package ru.alexeiadamov.oop.codecorrection;
 
-class Lorry extends Car, Moveable, Stopable {
-    public void move() {
-        System.out.println("Car is moving");
+public class Lorry extends Car {
+    public Lorry(String name, Color color, Engine engine) {
+        super(name, color, engine);
     }
 
-    public void stop() {
-        System.out.println("Car is stop");
+    @Override
+    void open() {
+        System.out.printf("%s is opening...\n", this.getClass().getSimpleName());
     }
 }
