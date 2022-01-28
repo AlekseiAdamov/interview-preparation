@@ -1,4 +1,4 @@
-package ru.alexeiadamov.javacore;
+package ru.alexeiadamov.javacore.pingpong;
 
 public enum Turn {
     PING("ping"),

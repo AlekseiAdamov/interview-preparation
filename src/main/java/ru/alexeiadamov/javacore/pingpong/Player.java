@@ -1,4 +1,4 @@
-package ru.alexeiadamov.javacore;
+package ru.alexeiadamov.javacore.pingpong;
 
 public class Player implements Runnable {
     private static final int TIMEOUT = 1000;

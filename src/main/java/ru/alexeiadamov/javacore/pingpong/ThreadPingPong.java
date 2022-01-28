@@ -1,4 +1,4 @@
-package ru.alexeiadamov.javacore;
+package ru.alexeiadamov.javacore.pingpong;
 
 public class ThreadPingPong {
     public static void main(String[] args) {
