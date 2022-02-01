@@ -20,13 +20,37 @@ SELECT
 FROM movie_schedule AS schedule1
 INNER JOIN movie_schedule AS schedule2
     ON schedule2.session_start BETWEEN schedule1.session_start AND schedule1.session_end
-    AND schedule2.movie_id != schedule1.movie_id
-;
+    AND schedule2.movie_id != schedule1.movie_id;
 
 -- 2. Перерывы 30 минут и более между фильмами.
 -- сортировка по убыванию
 -- фильм 1 - время начала - длительность - фильм 2 - время начала - длительность перерыва
-
+WITH movie_schedule AS (SELECT
+    sessions.movie AS  movie_id,
+    movies.title AS movie_title,
+    sessions.schedule AS session_start,
+    durations.duration AS duration,
+    sessions.schedule + (durations.duration * interval '1 minute') AS session_end
+FROM cinema.sessions AS sessions
+         LEFT JOIN cinema.movies AS movies ON sessions.movie = movies.id
+         LEFT JOIN cinema.durations AS durations ON movies.duration = durations.id)
+SELECT
+    schedule1.movie_title AS title_1,
+    -- ::timestamp(0) нужно для удаления миллисекунд из результата.
+    schedule1.session_start::timestamp(0) AS start_1,
+    schedule1.duration AS duration_1,
+    schedule1.session_end::timestamp(0) AS end_1,
+    schedule2.movie_title AS title_2,
+    schedule2.session_start::timestamp(0) AS start_2,
+    EXTRACT(EPOCH FROM (schedule2.session_start - schedule1.session_end)) / 60 AS delay
+FROM movie_schedule AS schedule1
+INNER JOIN movie_schedule AS schedule2
+    ON schedule2.session_start > schedule1.session_end
+    AND EXTRACT(DAY FROM schedule2.session_start) =  EXTRACT(DAY FROM schedule1.session_end)
+    AND (EXTRACT(EPOCH FROM (schedule2.session_start - schedule1.session_end)) / 60) >= 30
+--ORDER BY start_1, start_2
+ORDER BY delay DESC
+;
 
 -- 3. Список фильмов с количеством зрителей и кассовыми сборами.
 WITH sales AS (
