@@ -23,7 +23,7 @@ public class Storage {
         entityManager.getTransaction().commit();
     }
 
-    public Object find(Class<? extends Object> cls, long id) {
+    public Object find(Class<?> cls, long id) {
         entityManager.getTransaction().begin();
         Object entity = entityManager.find(cls, id);
         entityManager.getTransaction().commit();
@@ -42,13 +42,15 @@ public class Storage {
         entityManager.getTransaction().commit();
     }
 
-    public List findAll(Class<? extends Object> cls) {
-        final String entityName = cls.getSimpleName();
+    public List<?> findAll(Class<?> cls) {
+        final String entityName = cls.getAnnotation(javax.persistence.Entity.class).name();
         final String queryText = String.format("from %s", entityName);
+
         entityManager.getTransaction().begin();
         final Query query = entityManager.createQuery(queryText);
-        final List entityList = query.getResultList();
+        final List<?> entityList = query.getResultList();
         entityManager.getTransaction().commit();
+
         return entityList;
     }
 }
