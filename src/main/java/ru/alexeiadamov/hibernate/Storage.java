@@ -53,4 +53,8 @@ public class Storage {
 
         return entityList;
     }
+
+    public void close() {
+        entityManager.close();
+    }
 }

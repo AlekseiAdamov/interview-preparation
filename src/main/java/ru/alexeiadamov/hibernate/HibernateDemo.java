@@ -18,5 +18,6 @@ public class HibernateDemo {
             }
         }
         storage.findAll(Student.class).forEach(System.out::println);
+        storage.close();
     }
 }
