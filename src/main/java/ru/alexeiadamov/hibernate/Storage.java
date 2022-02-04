@@ -44,7 +44,7 @@ public class Storage {
 
     public List findAll(Class<? extends Object> cls) {
         final String entityName = cls.getSimpleName();
-        final String queryText = String.format("select from %s", entityName);
+        final String queryText = String.format("from %s", entityName);
         entityManager.getTransaction().begin();
         final Query query = entityManager.createQuery(queryText);
         final List entityList = query.getResultList();

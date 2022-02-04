@@ -26,6 +26,10 @@ public class Student {
     public Student() {
     }
 
+    public Student(String name) {
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }
